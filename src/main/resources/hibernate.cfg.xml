@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+   <session-factory>
+   
+   <!-- Database Connection Settings -->
+   
+   <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+   <property name="connection.url">jdbc:mysql://localhost:3306/HibernateTest</property>
+   <property name="connection.username">root</property>
+   <property name="connection.password">root</property>
+   
+   <!-- JDBC Connection Pool -->
+   <property name="connection.pool_size">1</property>
+   
+   <!-- SQL Dialect -->
+   <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+   
+   <!-- Disable the second level cache -->
+   <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+   
+   <!-- Echo all SQL query to StdOut -->
+   <property name="show_sql">true</property>
+   
+   <!-- Drop and re create Database Schema on Startup -->  
+   <property name="hbm2ddl.auto">update</property> 
+   
+   <!-- Names the annotated entity class -->
+   <mapping class="org.tutor.struts2.model.Users"/>
+   <mapping class="org.tutor.struts2.model.Student"/>
+   <mapping class="org.tutor.struts2.model.Instructor"/>
+   <mapping class="org.tutor.struts2.model.Admin"/>
+   <mapping class="org.tutor.struts2.model.Course"/>
+   <mapping class="org.tutor.struts2.model.Quiz"/>
+   <mapping class="org.tutor.struts2.model.Script"/>
+   <mapping class="org.tutor.struts2.model.Comment"/>
+   <mapping class="org.tutor.struts2.model.Lecture"/>
+   <mapping class="org.tutor.struts2.model.UnverifiedUser"/>
+   
+   </session-factory>
+   
+</hibernate-configuration>
+   
+   
+   
+   

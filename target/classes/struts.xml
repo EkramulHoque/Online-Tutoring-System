@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false"/>
+	 <constant name="struts.multipart.maxSize" value="100000000" />
+	<package name="helloworld" namespace="/metronic/templates/frontend" extends="json-default">
+	
+	
+	<!-- Rakib actions  -->
+	
+	<interceptors>
+			<interceptor name="LoginInterceptor"
+				class="org.tutor.struts2.interceptors.LoginInterceptor" />
+			<interceptor-stack name="secureStack">
+				<interceptor-ref name="LoginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<action name="index">
+			<result>index-custom.jsp</result>
+		</action>
+
+
+		<action name="performSignup" class="org.tutor.struts2.pagehandlers.SignUpPageHandler"
+			method="execute">
+			<result name="success" type="redirectAction">
+				<param name="actionName">performLogin</param>
+				<param name="email">${email}</param>
+				<param name="password">${password}</param>
+			</result>
+			<result name="input">page-registration.jsp</result>
+		</action>
+
+		<action name="performLogin" class="org.tutor.struts2.pagehandlers.LoginPageHandler"
+			method="execute">
+			<result name="successInstructor" type="redirectAction">
+				<param name="actionName">instructorHome</param>
+			</result>
+			<result name="successStudent" type="redirectAction">
+				<param name="actionName">studentHome</param>
+			</result>
+
+			<result name="unverifiedLogin" type="redirectAction">
+				<param name="actionName">unverifiedProfile</param>
+			</result>
+
+			<result name="input">page-login.jsp</result>
+		</action>
+
+		<action name="logout" class="org.tutor.struts2.pagehandlers.LogoutAction"
+			method="execute">
+			<result name="success">/index.jsp</result>
+		</action>
+
+		<action name="resendVerificationMail"
+			class="org.tutor.struts2.utils.AccountVerificationService" method="resendConfirmationEmail">
+			<result name="success">/index.jsp</result>
+		</action>
+
+		<action name="verifyUser"
+			class="org.tutor.struts2.utils.AccountVerificationService" method="verifyUser">
+			<result name="successInstructor" type="redirectAction">
+				<param name="actionName">instructorHome</param>
+			</result>
+			<result name="successStudent" type="redirectAction">
+				<param name="actionName">studentHome</param>
+			</result>
+			<result name="login">page-500.jsp</result>
+
+		</action>
+
+
+		<action name="unverifiedProfile">
+			<result>home-unverified.jsp</result>
+			<result name="login">page-login.jsp</result>
+		</action>
+
+
+		<action name="instructorHome">
+			<interceptor-ref name="secureStack" />
+			<result name="success">home-instructor.jsp</result>
+			<result name="login">/index.jsp</result>
+			<result name="unverified">home-unverified.jsp</result>
+		</action>
+
+		<action name="studentHome">
+			<result>home-student.jsp</result>
+			<result name="unverified">home-unverified.jsp</result>
+			<result name="login">/index.jsp</result>
+		</action>
+
+
+
+		<action name="jsonTest" class="org.tutor.struts2.utils.JsonTest"
+			method="execute">
+			<result type="json"></result>
+		</action>
+
+		<action name="getStudentsPerformance" class="org.tutor.struts2.utils.InstructorStudentStat"
+			method="execute">
+			<result name="success">performance-table.jsp</result>
+		</action>
+
+		<action name="getOwnPerformance" class="org.tutor.struts2.utils.StudentStat"
+			method="execute">
+			<result name="success">performance-table-student.jsp</result>
+		</action>
+
+		<!-- Rakib actions Ends -->
+
+ 		
+ 		<!-- Nuhel's action -->
+ 		
+ 		<action name="examAction" class="org.tutor.struts2.pagehandlers.ExamHandler" method="make">
+			<result>/metronic/templates/frontend/exam.jsp</result>
+		</action>
+		
+		
+		 <action name="examResult" class="org.tutor.struts2.pagehandlers.ExamHandler" method="execute">
+			<result>/metronic/templates/frontend/exam.jsp</result>
+		</action>
+		
+		
+		 <action name="welcomeAjax" class="org.tutor.struts2.pagehandlers.ExamHandler" method="ajax">
+            <result type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+ 		</action>
+ 		
+ 	<action name="instructedCourses" class="org.tutor.struts2.pagehandlers.InstructedCoursesHandler" method="execute">
+			<result  name="success">/metronic/templates/frontend/instructedCourses.jsp</result>
+		</action>
+		
+		
+		<action name="course" class="org.tutor.struts2.pagehandlers.CourseHandler" method="execute">
+			<result  name="success">/metronic/templates/frontend/course.jsp</result>
+			<result  name="error">page-500.jsp</result>
+		</action>
+		
+		<action name="newCourse" class="org.tutor.struts2.pagehandlers.OpenNewCourseHandler" >
+			<result  name="success">/metronic/templates/frontend/openNewCourse.jsp</result>
+		</action>
+		
+		<action name="openCourse" class="org.tutor.struts2.pagehandlers.OpenNewCourseHandler" method="execute">
+			<result  name="success" type="redirectAction">
+				<param name="actionName">instructedCourses</param>
+			</result>
+		</action>
+		
+		<action name="enrolledCourses" class="org.tutor.struts2.pagehandlers.EnrolledCoursesHandler" method="execute">
+			<result  name="success">/metronic/templates/frontend/enrolledCourses.jsp</result>
+		</action>
+		
+		<action name="findCourse" class="org.tutor.struts2.pagehandlers.FindCoursesHandler" method="execute">
+			<result  name="success">/metronic/templates/frontend/findCourses.jsp</result>
+		</action>
+		
+		<action name="enrollCourse" class="org.tutor.struts2.pagehandlers.FindCoursesHandler" method="enroll">
+			<result  name="success" type="redirectAction">
+				<param name="actionName">enrolledCourses</param>
+			</result>
+		</action>
+		
+		<action name="studentCourse" class="org.tutor.struts2.pagehandlers.StudentCourseHandler" method="execute">
+			<result  name="success">/metronic/templates/frontend/studentCourse.jsp</result>
+		</action>
+		
+		<action name="newLectureAdd" class="org.tutor.struts2.pagehandlers.NewLectureHandler" method="open">
+			<result  name="success">/metronic/templates/frontend/newLecture.jsp</result>
+		</action>
+		
+		<action name="newLecture" class="org.tutor.struts2.pagehandlers.NewLectureHandler" method="execute">
+			<result  name="success" type="redirectAction">
+				<param name="actionName">course></param>
+				<param name="courseID">${courseID}</param>
+			</result>
+		</action>
+		
+		<!-- Nuhel's action Ends -->
+		
+ <action name="openUploadPage" class="org.tutor.struts2.utils.FileUploader" method="display">
+			<result name="none">/metronic/templates/frontend/fileUpload.jsp</result>	 
+		</action>
+		
+		<action name="openVideoPage" class="org.tutor.struts2.utils.VideoUpload" method="display">
+			<result name="none">/metronic/templates/frontend/videoUpload.jsp</result>	 
+		</action>
+		
+ <action name="upload" class="org.tutor.struts2.utils.FileUploader"
+			method = "execute">
+			     
+        <interceptor-ref name="fileUpload">
+                <param name="maximumSize">2572864</param>
+                <param name="allowedTypes">application/ms-excel,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</param>
+            </interceptor-ref> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+       			 
+			 <result name="success">
+                     /pages/success.jsp  
+            </result>   
+			<result name="error">
+                    /pages/error.jsp
+            </result>
+			<result name="input">/pages/error.jsp</result>
+		</action>
+		
+		<action name="VideoUpload" class="org.tutor.struts2.utils.VideoUpload"
+			method = "execute">
+			
+			<interceptor-ref name="fileUpload">
+						 <param name="maximumSize">100000000</param>
+					  <param name="allowedTypes">
+					     image/png,image/gif,image/jpeg,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+					  								text/plain,
+					  								application/pdf,
+					  								video/mp4,
+					  								video/flv,
+					  								video/mpeg,
+					  								video/x-dv,
+					  								audio/mpeg,
+					  								video/h264,
+                									video/x-flv,
+                									video/x-f4v,
+                									video/mpeg,
+                									application/mp4,
+                									video/mp4
+					  </param>
+					</interceptor-ref>
+    		<interceptor-ref name="defaultStack"></interceptor-ref>
+    		
+			 <result name="success">
+                       /pages/success.jsp        
+            </result>   
+			<result name="error">/pages/error.jsp</result>
+			<result name="input">/pages/error.jsp</result>
+		</action>
+		
+		<action name="ImageUpload" class="org.tutor.struts2.utils.ImageUploader" method="execute">	
+			
+			    <interceptor-ref name="fileUpload">
+           <param name="maximumSize">20572864</param>
+              <param name="allowedTypes">image/png,image/gif,image/jpeg,image/jpg</param>
+       			 </interceptor-ref>     			  
+       			  <interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="error">/pages/error.jsp</result>
+			<result name="student" type="redirectAction">userProfileStudent</result>
+			<result name="instructor" type="redirectAction">userProfileInstructor</result>
+			<result name="input">/pages/error.jsp</result>
+		</action>
+		
+ 
+ 		<action name="userProfileStudent" class="org.tutor.struts2.pagehandlers.ProfileHandler" method="executeStudent">  
+            <result name="success">
+			 /metronic/templates/frontend/UserProfileStudent.jsp 
+			</result>
+			<result name="error">/pages/error.jsp</result>
+            
+ </action>
+ 
+ <action name="userProfileInstructor" class="org.tutor.struts2.pagehandlers.ProfileHandler" method="executeInstructor">  
+            <result name="success">
+			 /metronic/templates/frontend/UserProfileInstructor.jsp 
+			</result>
+			<result name="error">/pages/error.jsp</result>
+            
+ </action>
+ 
+ 		<action name="userUpdate" class="org.tutor.struts2.pagehandlers.ProfileHandler" method="update">
+			<result name="student" type="redirectAction">userProfileStudent</result>
+			<result name="instructor" type="redirectAction">userProfileInstructor</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		
+	 
+		 	<action name="lectureLoad" class="org.tutor.struts2.pagehandlers.LectureViewHandler" method="execute">
+           <result name="student">
+                       /metronic/templates/frontend/baseLayoutStudent.jsp       
+            </result>  
+            
+            <result name="instructor">
+                       /metronic/templates/frontend/baseLayoutInstructor.jsp       
+            </result>  
+               
+               
+			 </action>  	
+ 			<action name="submitComment" class="org.tutor.struts2.pagehandlers.LectureViewHandler" method="commentPass">
+        	  <result name="success" type="redirectAction">
+                      lectureLoad      
+            </result>   
+			</action>
+		
+		
+		
+		<action name="download" class="org.tutor.struts2.pagehandlers.LectureViewHandler" method="download">
+	<result name="success" type="stream">
+	  <param name="contentType">application/octet-stream</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="file">${file}</param>
+	  <param name="contentDisposition">attachment;filename=${file}</param>
+	  <param name="bufferSize">1024</param>
+	</result>
+	
+	 <result name="Lecture" type="redirectAction">
+                      lectureLoad      
+            </result>  
+	
+   </action>
+		
+		
+	</package>
+	 <include file="struts-upload.xml"></include>
+</struts>
+   
+
+   
